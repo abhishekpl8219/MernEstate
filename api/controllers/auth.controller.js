@@ -24,10 +24,8 @@ export const signin = async(req,res,next) => {
       const validPasword =  bcryptjs.compareSync(password,validUser.password);
       if(!validUser) return next(errorHandler(401,'password is in correct found'));
       const token = jwt.sign({ id: validUser._id }, "xcv");
-      
       res.cookie('access-token',token,{httpOnly:true}).status(200).json(validUser._doc);
       
-
     } catch (error) {
       next(error);
       

@@ -1,11 +1,14 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react';
+import { signInFailure,signInStart,signInSuccess } from '../user/userSlice';
+import {useSelector,useDispatch} from 'react-redux';
 export default function SignUp() {
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const {loading,error}=useSelector((state) =>   state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -17,7 +20,7 @@ export default function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
+      dispatch(signInStart());
       const res = await fetch('http://localhost:3000/api/auth/signin/', {
         method: 'POST',
         headers: {
@@ -30,16 +33,13 @@ export default function SignUp() {
       console.log("setFormData", setFormData);
       console.log("data afer pushing the server in the data", data);
       if (data.success === false) {
-        setLoading(false);
-        setError(data.message);
+        dispatch(signInFailure(data.message));
         return;
       }
-      setLoading(false);
-      setError(null);
+      dispatch(signInSuccess(data));
       navigate('/');
     } catch (error) {
-      setLoading(false);
-      setError(error.message);
+      dispatch(signInFailure(error.message));
 
     }
   };
@@ -50,7 +50,7 @@ export default function SignUp() {
        
         <input type="email" placeholder='email' className='border p-3 rounded-lg' id='email' onChange={handleChange} />
         <input type="password" placeholder='password' className='border p-3 rounded-lg' id='password' onChange={handleChange} />
-        <button className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80' disabled={loading}> {loading ? 'Loading...' : 'Signup'}</button>
+        <button className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80' disabled={loading}> {loading ? 'Loading...' : 'Sign in'}</button>
       </form>
       <div className="flex gap-2 mt-5">
         <p>Dont Have an account?</p>
