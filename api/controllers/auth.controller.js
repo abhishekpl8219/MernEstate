@@ -25,7 +25,9 @@ export const signin = async(req,res,next) => {
       if (!validPassword) return next(errorHandler(401, 'Wrong credentials!'));
       if(!validUser) return next(errorHandler(401,'password is in correct found'));
       const token = jwt.sign({ id: validUser._id }, "xcv");
+      console.log("value of token in auth controller",token)
       res.cookie('access_token',token,{httpOnly:true}).status(200).json(validUser._doc);
+      
       
     } catch (error) {
       next(error);

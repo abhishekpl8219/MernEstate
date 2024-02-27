@@ -22,6 +22,7 @@ export default function SignUp() {
     e.preventDefault();
     try {
       dispatch(signInStart());
+      console.log("value of json",JSON.stringify(formData))
       const res = await fetch('http://localhost:3000/api/auth/signin/', {
         method: 'POST',
         headers: {

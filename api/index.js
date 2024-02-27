@@ -13,20 +13,24 @@ mongoose.connect("mongodb+srv://royalrappy:royalrappy@mernestate.fnfxubk.mongodb
 })
 
 // Use this after the variable declaration
+
 const app = express();
-app.use(express.json());
-app.use(cookieParser());
-app.listen(3000, () => {
-    console.log('Server is running on port 3000!');
-    }
-);
 const corsOptions ={
     origin:'*', 
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200,
  }
  
-app.use(cors(corsOptions)) 
+app.use(cors(corsOptions))
+ 
+app.use(express.json());
+
+app.use(cookieParser());
+app.listen(3000, () => {
+    console.log('Server is running on port 3000!');
+    }
+);
+
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use((err, req, res, next) => {
