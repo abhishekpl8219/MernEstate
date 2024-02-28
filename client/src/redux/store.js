@@ -3,7 +3,7 @@ import userSliced from '../user/userSlice';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
 
-const rootReducer = combineReducers({user:userSliced.reducer});
+const rootReducer = combineReducers({user:userSliced});
 const persistConfig={
 key: 'root',
 storage,
@@ -19,4 +19,5 @@ export const store = configureStore({
       serializableCheck: false,
     }),
 });
+console.log("value of store",store)
 export const persistor  =persistStore(store);
